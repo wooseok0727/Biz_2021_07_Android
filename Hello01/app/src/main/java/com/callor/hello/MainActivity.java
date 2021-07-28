@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this,SecondActivity2.class);
                     startActivity(intent);
                 } else if(v.getId() == R.id.btn_phone) {
-                    Intent intent = new Intent("android.intent.action.CALL", Uri.parse("010-1111-1111"));
+                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:010-1111-1111"));
                     startActivity(intent);
                 }
 
