@@ -6,8 +6,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.wooseok.chatt.adapter.ChattAdapter;
 import com.wooseok.chatt.model.Chatt;
 
@@ -25,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
     private ChattAdapter chattAdapter;
     private List<Chatt> chattList;
 
+    // firebase와 연결하는 Connecntion 을 위한 객체 선언하기
+    private DatabaseReference dbRef;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +42,14 @@ public class MainActivity extends AppCompatActivity {
             한개의 전체 화면을 만드는 것
          */
         setContentView(R.layout.activity_main);
+
+        FirebaseDatabase dbConn = FirebaseDatabase.getInstance();
+
+        // 사용할 table(path)
+        // realtimeDatabase에서는 table을 path라는 개념으로 부른다
+        dbRef = dbConn.getReference("chatting");
+
+
 
         txt_msg = findViewById(R.id.txt_msg);
         btn_send = findViewById(R.id.btn_send);
@@ -72,5 +87,36 @@ public class MainActivity extends AppCompatActivity {
         //    Layout 매니저를 설정하기
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         chat_list_view.setLayoutManager(layoutManager);
+
+        /**
+         * EditBox에 메시지를 입력하고 Send 버튼을 클릭했을 때 할일 지정하기
+         *
+         * EditBox에 메시지를 입력하고 Send를 하면
+         * FireBase의 Realtime DataBase에 데이터를 insert
+         */
+
+        btn_send.setOnClickListener(view->{
+
+            // EditBox에 입력된 문자열을 추출하여 문자열 변수에 담기
+            String msg = txt_msg.getText().toString();
+            if(msg != null && !msg.isEmpty()) {
+
+                String toastMsg = String.format("메시지 : %s",msg);
+                Toast.makeText(MainActivity.this, "toastMsg", Toast.LENGTH_SHORT).show();
+
+                Chatt chattVO = new Chatt();
+                chattVO.setMsg(msg);
+                chattVO.setName("홍길동");
+
+                Log.d("클릭", chattVO.toString());
+
+                // chattList.add(chattVO);
+                // firebase의 realtime DB의 table에 데이터를 insert 하라
+                // push 하라
+                dbRef.push().setValue(chattVO);
+                txt_msg.setText("");
+            }
+
+        });
     }
 }

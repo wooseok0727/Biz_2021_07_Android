@@ -13,7 +13,7 @@ import com.wooseok.chatt.model.Chatt;
 
 import java.util.List;
 
-/*
+/**
     RecyclerView.Adapter 구현한 클래스
     RecyclerView에 데이터를 표현하고자 할때 사용하는 Helper 클래스
         Helper 클래스(도와주는 도구 클래스)
