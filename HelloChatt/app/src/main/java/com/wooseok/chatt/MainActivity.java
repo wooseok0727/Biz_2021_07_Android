@@ -10,10 +10,12 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.wooseok.chatt.adapter.ChattAdapter;
 import com.wooseok.chatt.model.Chatt;
+import com.wooseok.chatt.service.FirebaseServiceImplV1;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,37 +45,12 @@ public class MainActivity extends AppCompatActivity {
          */
         setContentView(R.layout.activity_main);
 
-        FirebaseDatabase dbConn = FirebaseDatabase.getInstance();
-
-        // 사용할 table(path)
-        // realtimeDatabase에서는 table을 path라는 개념으로 부른다
-        dbRef = dbConn.getReference("chatting");
-
-
-
         txt_msg = findViewById(R.id.txt_msg);
         btn_send = findViewById(R.id.btn_send);
-
+        
         chat_list_view = findViewById(R.id.chatt_list_view);
-
         // 0. 보여줄 데이터 객체 생성
         chattList = new ArrayList<>();
-
-        // 테스트를 위한 가상의 데이터 생성하기
-        Chatt chatt = new Chatt();
-        chatt.setName("박문수");
-        chatt.setMsg("헬로우");
-        chattList.add(chatt);
-
-        chatt = new Chatt();
-        chatt.setName("김길동");
-        chatt.setMsg("안녕");
-        chattList.add(chatt);
-
-        chatt = new Chatt();
-        chatt.setName("최길동");
-        chatt.setMsg("하이");
-        chattList.add(chatt);
 
         // 1. Adapter 객체 생성
         //    Adapter 객체를 생성할 때 보여줄 데이터 객체를
@@ -87,6 +64,37 @@ public class MainActivity extends AppCompatActivity {
         //    Layout 매니저를 설정하기
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         chat_list_view.setLayoutManager(layoutManager);
+
+
+        FirebaseDatabase dbConn = FirebaseDatabase.getInstance();
+
+        // 사용할 table(path)
+        // realtimeDatabase에서는 table을 path라는 개념으로 부른다
+        dbRef = dbConn.getReference("chatting");
+
+        // firebase로 부터 데이터 변화 이벤트가 전달되면
+        // 이벤트를 수신하여 할일을 정하기
+        ChildEventListener childEventListener = new FirebaseServiceImplV1(chattAdapter);
+
+        // 이벤트 핸들러 연결
+        dbRef.addChildEventListener(childEventListener);
+
+
+        // 테스트를 위한 가상의 데이터 생성하기
+//        Chatt chatt = new Chatt();
+//        chatt.setName("박문수");
+//        chatt.setMsg("헬로우");
+//        chattList.add(chatt);
+//
+//        chatt = new Chatt();
+//        chatt.setName("김길동");
+//        chatt.setMsg("안녕");
+//        chattList.add(chatt);
+//
+//        chatt = new Chatt();
+//        chatt.setName("최길동");
+//        chatt.setMsg("하이");
+//        chattList.add(chatt);
 
         /**
          * EditBox에 메시지를 입력하고 Send 버튼을 클릭했을 때 할일 지정하기
@@ -116,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
                 dbRef.push().setValue(chattVO);
                 txt_msg.setText("");
             }
-
         });
     }
 }
