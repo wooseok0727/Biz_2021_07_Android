@@ -31,6 +31,10 @@ public interface NaverRetrofitService {
     Call<NaverParent> getNaverBook(
             @Header("X-Naver-Client-Id") String clientId,
             @Header("X-Naver-Client-Secret") String clientSecret,
-            @Query("query") String query
+            @Query("query") String query,
+            @Query("display") int display,
+            @Query("start") int start
     );
+    // 최종 생성되는 queryString
+    // book.json?query=자바&display=10&start=1
 }

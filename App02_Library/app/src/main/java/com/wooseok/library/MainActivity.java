@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
         // fab = findByViewId(R.id.fab) 이런 코드가 필요했으나
         // binding이 성립된 경우는 필요 없는 코드가 된다.
         // binding.fab 객체에 접근하여 event등을 선언할 수 있게 된다.
-
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @SneakyThrows
             @Override
@@ -69,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
 
-                NaverAPIServiceV1 naver = new NaverAPIServiceV1("자바");
-                naver.getNaverBooks("자바");
+                // NaverAPIServiceV1 naver = new NaverAPIServiceV1();
+                // naver.getNaverBooks("자바");
             }
         });
     }
