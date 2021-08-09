@@ -14,9 +14,12 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.wooseok.library.databinding.ActivityMainBinding;
+import com.wooseok.library.service.NaverAPIServiceV1;
 
 import android.view.Menu;
 import android.view.MenuItem;
+
+import lombok.SneakyThrows;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -60,10 +63,14 @@ public class MainActivity extends AppCompatActivity {
         // binding.fab 객체에 접근하여 event등을 선언할 수 있게 된다.
 
         binding.fab.setOnClickListener(new View.OnClickListener() {
+            @SneakyThrows
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+
+                NaverAPIServiceV1 naver = new NaverAPIServiceV1("자바");
+                naver.getNaverBooks("자바");
             }
         });
     }
