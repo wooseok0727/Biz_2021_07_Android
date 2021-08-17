@@ -99,9 +99,12 @@ public class MainActivity extends AppCompatActivity {
                         여기서 생성된 action 객체에
                         fragment 에 전달할 데이터를 실어서 보낸다
 
+                        fragment 에 전달할 데이터는
+                        NavDirections 객체를 생성할 때
+                        매개변수로 전달한다.
                      */
                     NavDirections action
-                    = FirstFragmentDirections.actionFirstFragmentToSecondFragment();
+                    = FirstFragmentDirections.actionFirstFragmentToSecondFragment(query);
 
                     // 생성된 action에 따라 화면에
                     // SecondFragment를 띄운다
